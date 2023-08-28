@@ -1,12 +1,127 @@
-<p style="text-align:center"><strong><em><span style="font-family:Courier New,Courier,monospace"><span style="font-size:36px">Frequency Incremental</span></span></em></strong></p>
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Game Upgrade</title>
+  <style>
+    .heading {
+      font-size: 24px;
+      font-weight: bold;
+      color: orange;
+    }
+    
+    .tab {
+      display: none;
+    }
+    
+    .tab.active {
+      display: block;
+    }
 
-<p style="text-align:center"><strong><em><span style="font-family:Courier New,Courier,monospace"><span style="font-size:20px">Update!!!</span></span></em></strong></p>
+    .tab-buttons {
+      margin-bottom: 10px;
+    }
+    
+    .tab-buttons button {
+      margin-right: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="tab-buttons">
+    <button onclick="changeTab(0)" class="active">Game</button>
+    <button onclick="changeTab(1)">Management</button>
+  </div>
+  
+  <div class="tab active">
+    <h1 class="heading"><span id="frequency">1</span> Hz</h1>
+    <button onclick="increaseFrequency()">Gain 1 Hz</button>
+    <button onclick="doubleFrequency()">Double Frequency</button>
+    <button onclick="tripleFrequency()">Triple Frequency</button>
+    <button onclick="superHz()">Super Hz (1.5 kHz)</button>
+  </div>
+  
+  <div class="tab">
+    <h2>Management</h2>
+    <button onclick="kHz()">kHz</button>
+    <button onclick="MHz()">MHz</button>
+    <button onclick="GHz()">GHz</button>
+  </div>
 
-<p><strong><em><span style="font-family:Courier New,Courier,monospace"><span style="font-size:28px">Hz Meter:&nbsp;</span></span><span style="font-size:28px"><span style="font-family:Times New Roman,Times,serif">0 Hz</span></span></em></strong></p>
+  <script>
+    var baseFrequency = 1; // Initial frequency before any upgrades
+    var boostFactor = 1.3; // Boost factor for Super Hz
 
-<p><strong><em><span style="font-size:28px"><span style="font-family:Times New Roman,Times,serif"><input name="Gain1" type="button" value="Get 1 Hz" />&nbsp;<input name="Gain2" type="reset" value="RESET." /></span></span></em></strong></p>
+    function increaseFrequency() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = currentFrequency + 1;
+    }
 
-<p style="text-align:center"><strong><em><span style="font-family:Times New Roman,Times,serif"><span style="font-size:72px"><a href="https://rubixyoutube.github.io">Menu.</a></span></span></em></strong></p>
+    function doubleFrequency() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = currentFrequency * 2;
+    }
 
-<p style="text-align:center"><strong><em><span style="font-family:Times New Roman,Times,serif"><span style="font-size:36px">Notice:&nbsp;</span></span><span style="font-size:36px"><span style="font-family:Georgia,serif">It Got Improved.&nbsp;</span><span style="font-family:Courier New,Courier,monospace">So Don&#39;t Mess The Code.</span></span></em></strong></p>
+    function tripleFrequency() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = currentFrequency * 3;
+    }
 
+    function superHz() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      if (currentFrequency >= 1500) {
+        frequencyElement.innerText = "Super Hz!";
+        applyBoost();
+        resetUpgrades();
+      } else {
+        alert("Upgrade requires 1.5 kHz or more!");
+      }
+    }
+
+    function applyBoost() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = Math.round(currentFrequency * boostFactor);
+    }
+
+    function resetUpgrades() {
+      var frequencyElement = document.getElementById("frequency");
+      frequencyElement.innerText = baseFrequency;
+    }
+
+    function kHz() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = currentFrequency / 1000 + " kHz";
+    }
+
+    function MHz() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = currentFrequency / 1000000 + " MHz";
+    }
+
+    function GHz() {
+      var frequencyElement = document.getElementById("frequency");
+      var currentFrequency = parseInt(frequencyElement.innerText);
+      frequencyElement.innerText = currentFrequency / 1000000000 + " GHz";
+    }
+    
+    function changeTab(tabIndex) {
+      var tabs = document.getElementsByClassName("tab");
+      var tabButtons = document.getElementsByClassName("tab-buttons")[0].getElementsByTagName("button");
+      
+      for (var i = 0; i < tabs.length; i++) {
+        tabs[i].classList.remove("active");
+        tabButtons[i].classList.remove("active");
+      }
+      
+      tabs[tabIndex].classList.add("active");
+      tabButtons[tabIndex].classList.add("active");
+    }
+  </script>
+</body>
+</html>
