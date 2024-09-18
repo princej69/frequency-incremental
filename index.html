@@ -2,27 +2,155 @@
 <head>
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .tab {
+            transition: background-color 0.3s ease;
+        }
+        .tab-bar {
+            height: 10px;
+        }
+        .popup {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: yellow;
+            color: black;
+            width: 512px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+        .version {
+            position: fixed;
+            bottom: 10px;
+            left: 10px;
+            color: rgba(255, 255, 255, 0.5);
+            text-shadow: 0 0 5px rgba(255, 255, 255, 0.5);
+        }
+        .achievement {
+            background-color: #064e3b;
+            border: 2px solid #10b981;
+            width: 512px;
+            height: 70px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 5px;
+            margin-top: 10px;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let hz = 0;
+            let gain = 1; // Gain in Hz/s
+            let cost = 10; // Initial cost for upgrade
+            const hzDisplay = document.getElementById('hz-display');
+            const gainDisplay = document.getElementById('gain-display');
+            const costDisplay = document.getElementById('cost-display');
+            const popup = document.getElementById('popup');
+            const achievement = document.getElementById('achievement');
+            const achievementContent = document.getElementById('achievement-content');
+
+            function updateHz() {
+                hz += gain / 30; // Update every 1/30 second
+                hzDisplay.textContent = `${Math.floor(hz)} Hz`;
+                if (hz >= 1 && !achievement.classList.contains('completed')) {
+                    achievement.classList.add('completed');
+                    achievement.textContent = 'First Hertz Complete';
+                    showPopup('Achievement Complete: First Hertz');
+                }
+            }
+
+            function showPopup(message) {
+                popup.textContent = message;
+                popup.style.opacity = 1;
+                setTimeout(() => {
+                    popup.style.opacity = 0;
+                }, 3000);
+            }
+
+            setInterval(updateHz, 1000 / 30); // Update every 1/30 second
+
+            document.getElementById('upgrade-button').addEventListener('click', function() {
+                if (hz >= cost) {
+                    hz -= cost;
+                    gain *= 2;
+                    cost *= 2;
+                    hzDisplay.textContent = `${Math.floor(hz)} Hz`;
+                    gainDisplay.textContent = `Gain: ${gain}Hz/s`;
+                    costDisplay.textContent = `${cost}Hz`;
+                }
+            });
+
+            const tabs = document.querySelectorAll('.tab');
+            tabs.forEach(tab => {
+                tab.addEventListener('click', function() {
+                    tabs.forEach(t => {
+                        t.classList.remove('bg-white', 'bg-green-500', 'bg-orange-500', 'text-black');
+                        t.classList.add('bg-gray-800', 'text-gray-300');
+                    });
+                    this.classList.remove('bg-gray-800', 'text-gray-300');
+                    if (this.id === 'tab-hz') {
+                        this.classList.add('bg-white', 'text-black');
+                        document.getElementById('hz-content').classList.remove('hidden');
+                        document.getElementById('achievement-content').classList.add('hidden');
+                    } else if (this.id === 'tab-achievements') {
+                        this.classList.add('bg-green-500', 'text-black');
+                        document.getElementById('hz-content').classList.add('hidden');
+                        document.getElementById('achievement-content').classList.remove('hidden');
+                    } else if (this.id === 'tab-settings') {
+                        this.classList.add('bg-orange-500', 'text-black');
+                        document.getElementById('hz-content').classList.add('hidden');
+                        document.getElementById('achievement-content').classList.add('hidden');
+                    }
+                });
+            });
+        });
+    </script>
 </head>
 <body class="bg-gray-900 text-gray-300 font-sans h-screen">
     <div class="flex h-full">
-        <div class="flex-1 p-8 flex flex-col justify-center">
-            <div class="text-2xl">You Have</div>
-            <div class="text-6xl font-bold">0 Hz</div>
-            <div class="text-xl">Gain: 0Hz/s</div>
-            <div class="mt-8 border-t border-gray-500 pt-4">
-                <div class="text-3xl font-bold">Upgrades</div>
-                <div class="text-lg mt-2">Double Click Gain</div>
-                <button class="mt-4 px-4 py-2 border border-gray-300 text-white">BUY</button>
-                <div class="text-lg mt-2">20Hz</div>
+        <div class="w-1/4 bg-gray-800 p-8 flex flex-col justify-center">
+            <div id="tab-hz" class="tab text-6xl font-bold text-black bg-white p-4 cursor-pointer">
+                Hz
+                <div class="tab-bar bg-white"></div>
+            </div>
+            <div id="tab-achievements" class="tab text-lg text-gray-300 bg-gray-800 p-4 mt-8 cursor-pointer">
+                Achievements
+                <div class="tab-bar bg-green-500"></div>
+            </div>
+            <div id="tab-settings" class="tab text-lg text-gray-300 bg-gray-800 p-4 mt-4 cursor-pointer">
+                Settings
+                <div class="tab-bar bg-orange-500"></div>
             </div>
         </div>
-        <div class="w-1/4 bg-gray-800 p-8 flex flex-col justify-center">
-            <div class="text-6xl font-bold text-black">Hz</div>
-            <div class="mt-8">
-                <div class="text-lg text-green-500">Achievements</div>
-                <div class="mt-4 text-lg text-orange-500">Settings</div>
+        <div class="flex-1 p-8 flex flex-col justify-center">
+            <div id="hz-content">
+                <div class="text-2xl">You Have</div>
+                <div id="hz-display" class="text-6xl font-bold">0 Hz</div>
+                <div id="gain-display" class="text-xl">Gain: 1Hz/s</div>
+                <div class="mt-8 border-t border-gray-500 pt-4">
+                    <div class="text-3xl font-bold">Double Gain Speed</div>
+                    <div class="text-lg mt-2">Double Click Gain</div>
+                    <button id="upgrade-button" class="mt-4 px-4 py-2 border border-gray-300 text-white">BUY</button>
+                    <div id="cost-display" class="text-lg mt-2">10Hz</div>
+                </div>
+            </div>
+            <div id="achievement-content" class="hidden">
+                <div class="achievement" id="achievement">First Hertz</div>
             </div>
         </div>
     </div>
+    <div id="popup" class="popup"></div>
+    <div class="version">v0.1.0</div>
 </body>
 </html>
