@@ -1,127 +1,28 @@
-<!DOCTYPE html>
 <html>
 <head>
-  <title>Game Upgrade</title>
-  <style>
-    .heading {
-      font-size: 24px;
-      font-weight: bold;
-      color: orange;
-    }
-    
-    .tab {
-      display: none;
-    }
-    
-    .tab.active {
-      display: block;
-    }
-
-    .tab-buttons {
-      margin-bottom: 10px;
-    }
-    
-    .tab-buttons button {
-      margin-right: 10px;
-    }
-  </style>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 </head>
-<body>
-  <div class="tab-buttons">
-    <button onclick="changeTab(0)" class="active">Game</button>
-    <button onclick="changeTab(1)">Management</button>
-  </div>
-  
-  <div class="tab active">
-    <h1 class="heading"><span id="frequency">1</span> Hz</h1>
-    <button onclick="increaseFrequency()">Gain 1 Hz</button>
-    <button onclick="doubleFrequency()">Double Frequency</button>
-    <button onclick="tripleFrequency()">Triple Frequency</button>
-    <button onclick="superHz()">Super Hz (1.5 kHz)</button>
-  </div>
-  
-  <div class="tab">
-    <h2>Management</h2>
-    <button onclick="kHz()">kHz</button>
-    <button onclick="MHz()">MHz</button>
-    <button onclick="GHz()">GHz</button>
-  </div>
-
-  <script>
-    var baseFrequency = 1; // Initial frequency before any upgrades
-    var boostFactor = 1.3; // Boost factor for Super Hz
-
-    function increaseFrequency() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = currentFrequency + 1;
-    }
-
-    function doubleFrequency() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = currentFrequency * 2;
-    }
-
-    function tripleFrequency() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = currentFrequency * 3;
-    }
-
-    function superHz() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      if (currentFrequency >= 1500) {
-        frequencyElement.innerText = "Super Hz!";
-        applyBoost();
-        resetUpgrades();
-      } else {
-        alert("Upgrade requires 1.5 kHz or more!");
-      }
-    }
-
-    function applyBoost() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = Math.round(currentFrequency * boostFactor);
-    }
-
-    function resetUpgrades() {
-      var frequencyElement = document.getElementById("frequency");
-      frequencyElement.innerText = baseFrequency;
-    }
-
-    function kHz() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = currentFrequency / 1000 + " kHz";
-    }
-
-    function MHz() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = currentFrequency / 1000000 + " MHz";
-    }
-
-    function GHz() {
-      var frequencyElement = document.getElementById("frequency");
-      var currentFrequency = parseInt(frequencyElement.innerText);
-      frequencyElement.innerText = currentFrequency / 1000000000 + " GHz";
-    }
-    
-    function changeTab(tabIndex) {
-      var tabs = document.getElementsByClassName("tab");
-      var tabButtons = document.getElementsByClassName("tab-buttons")[0].getElementsByTagName("button");
-      
-      for (var i = 0; i < tabs.length; i++) {
-        tabs[i].classList.remove("active");
-        tabButtons[i].classList.remove("active");
-      }
-      
-      tabs[tabIndex].classList.add("active");
-      tabButtons[tabIndex].classList.add("active");
-    }
-  </script>
+<body class="bg-gray-900 text-gray-300 font-sans h-screen">
+    <div class="flex h-full">
+        <div class="flex-1 p-8 flex flex-col justify-center">
+            <div class="text-2xl">You Have</div>
+            <div class="text-6xl font-bold">0 Hz</div>
+            <div class="text-xl">Gain: 0Hz/s</div>
+            <div class="mt-8 border-t border-gray-500 pt-4">
+                <div class="text-3xl font-bold">Upgrades</div>
+                <div class="text-lg mt-2">Double Click Gain</div>
+                <button class="mt-4 px-4 py-2 border border-gray-300 text-white">BUY</button>
+                <div class="text-lg mt-2">20Hz</div>
+            </div>
+        </div>
+        <div class="w-1/4 bg-gray-800 p-8 flex flex-col justify-center">
+            <div class="text-6xl font-bold text-black">Hz</div>
+            <div class="mt-8">
+                <div class="text-lg text-green-500">Achievements</div>
+                <div class="mt-4 text-lg text-orange-500">Settings</div>
+            </div>
+        </div>
+    </div>
 </body>
 </html>
